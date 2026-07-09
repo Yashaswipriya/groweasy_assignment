@@ -1,4 +1,5 @@
 import { Router } from "express";
+import pLimit from "p-limit";
 import { upload } from "../middleware/upload";
 import { ApiError } from "../middleware/errorHandler";
 import { parseCsvBuffer, chunkRecords } from "../services/csvParser";
@@ -25,11 +26,11 @@ importRouter.post("/", upload.single("file"), async (req, res, next) => {
     const imported: CrmRecord[] = [];
     const skipped: SkippedRecord[] = [];
 
-    for (let i = 0; i < batches.length; i += BATCH_CONCURRENCY) {
-      const window = batches.slice(i, i + BATCH_CONCURRENCY);
+    const limit = pLimit(BATCH_CONCURRENCY);
 
-      const results = await Promise.all(
-        window.map(async (batch) => {
+    const results = await Promise.all(
+      batches.map((batch) =>
+        limit(async () => {
           const mapped = await extractBatch(batch);
           if (!mapped) {
             // The whole batch failed even after retries - skip every row in it
@@ -40,13 +41,13 @@ importRouter.post("/", upload.single("file"), async (req, res, next) => {
           }
           return mapped.map((m) => validateRecord(m, batch[m.row_index] ?? {}));
         })
-      );
+      )
+    );
 
-      for (const batchResults of results) {
-        for (const outcome of batchResults) {
-          if ("record" in outcome) imported.push(outcome.record);
-          else skipped.push(outcome.skipped);
-        }
+    for (const batchResults of results) {
+      for (const outcome of batchResults) {
+        if ("record" in outcome) imported.push(outcome.record);
+        else skipped.push(outcome.skipped);
       }
     }
 
