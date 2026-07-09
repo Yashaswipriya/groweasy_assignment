@@ -93,16 +93,23 @@ async function extractBatchOnce(batch: RawRecord[]): Promise<AiMappedRow[]> {
  */
 export async function extractBatch(batch: RawRecord[]): Promise<AiMappedRow[] | null> {
   for (let attempt = 0; attempt <= MAX_BATCH_RETRIES; attempt++) {
+    const start = Date.now();
     try {
       const mapped = await extractBatchOnce(batch);
-      if (mapped.length === batch.length) return mapped;
-      // Length mismatch - treat as a bad response and retry.
+      const elapsed = Date.now() - start;
+      if (mapped.length === batch.length) {
+        console.log(`[extractBatch] success on attempt ${attempt + 1}, ${elapsed}ms, ${batch.length} rows`);
+        return mapped;
+      }
+      console.warn(
+        `[extractBatch] length mismatch on attempt ${attempt + 1} (${elapsed}ms): expected ${batch.length}, got ${mapped.length}`
+      );
     } catch (err) {
+      const elapsed = Date.now() - start;
+      console.error(`[extractBatch] error on attempt ${attempt + 1} (${elapsed}ms):`, err);
       if (attempt === MAX_BATCH_RETRIES) {
-        console.error("Batch extraction failed after retries:", err);
         return null;
       }
-      // brief backoff before retrying
       await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
     }
   }
