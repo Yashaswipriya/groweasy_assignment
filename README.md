@@ -282,15 +282,11 @@ groweasy-csv-importer
 
 ## Upload
 
-> *(Insert Screenshot 1)*
-
 ![Upload Screen](docs/screenshots/upload.png)
 
 ---
 
 ## CSV Preview
-
-> *(Insert Screenshot 2)*
 
 ![Preview Screen](docs/screenshots/preview.png)
 
@@ -298,15 +294,11 @@ groweasy-csv-importer
 
 ## AI Processing
 
-> *(Insert Screenshot 3)*
-
 ![Processing Screen](docs/screenshots/processing.png)
 
 ---
 
 ## Results
-
-> *(Insert Screenshot 4)*
 
 ![Results Screen](docs/screenshots/results.png)
 
