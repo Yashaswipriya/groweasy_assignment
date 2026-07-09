@@ -16,6 +16,32 @@ Built as part of the **Software Developer (Intern/Full-Time) Assignment** for Gr
 
 ---
 
+# Screenshots
+
+## Upload
+
+![Upload Screen](docs/screenshots/upload.png)
+
+---
+
+## CSV Preview
+
+![Preview Screen](docs/screenshots/preview.png)
+
+---
+
+## AI Processing
+
+![Processing Screen](docs/screenshots/processing.png)
+
+---
+
+## Results
+
+![Results Screen](docs/screenshots/results.png)
+
+---
+
 # Overview
 
 Businesses receive lead data from multiple sources including:
@@ -275,32 +301,6 @@ groweasy-csv-importer
 │
 └── docker-compose.yml
 ```
-
----
-
-# Screenshots
-
-## Upload
-
-![Upload Screen](docs/screenshots/upload.png)
-
----
-
-## CSV Preview
-
-![Preview Screen](docs/screenshots/preview.png)
-
----
-
-## AI Processing
-
-![Processing Screen](docs/screenshots/processing.png)
-
----
-
-## Results
-
-![Results Screen](docs/screenshots/results.png)
 
 ---
 
