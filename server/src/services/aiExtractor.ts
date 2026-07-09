@@ -73,6 +73,9 @@ async function extractBatchOnce(batch: RawRecord[]): Promise<AiMappedRow[]> {
     config: {
       responseMimeType: "application/json",
       temperature: 0,
+      thinkingConfig: {
+        thinkingBudget: 0,
+      },
     },
   });
   const text = result.text ?? "";
